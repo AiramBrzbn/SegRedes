@@ -282,5 +282,10 @@ interface vlan 90
 
 copy running-config startup-config
 
+######## POLITICAS DEL FORTIGATE ###########
+
+Una de las primeras cosas que se nos pidió para el fortigate fue configurar una ruta estática, yo lo he hecho de la siguiente manera con la ip de salida de la red, haciendo que todo el tráfico desconocido pueda dirigirse hacía allí:
+
+<img width="1567" height="352" alt="image" src="https://github.com/user-attachments/assets/4353da4d-b270-4176-a298-b41341d280fc" />
 
 
