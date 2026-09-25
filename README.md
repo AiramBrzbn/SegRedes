@@ -44,22 +44,34 @@ la red así:
 
 
 ##### SCRIPTS ####
+
 Como la mayoría de esta práctica fue realizada a través de la GUI de fortigate, los scripts utilizados para mis dispositivos se centraron en configuraciones
 básicas, como de interfaces y de seguridad, estos fueron mis scripts utilizados por cada dispositivo:
 
 ##WEB-SERVER##
+
 sudo nano /etc/netplan/00-installer-config.yaml
 
 network:
+
   version: 2
+  
   ethernets:
+  
     ens3:
+    
       addresses:
+      
         - 10.78.7.130/28
+        
       routes:
+      
         - to: 0.0.0.0/0
+        
           via: 10.78.7.129
+
       nameservers:
+      
         addresses: [8.8.8.8, 8.8.4.4]
 
 sudo netplan apply
