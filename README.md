@@ -319,6 +319,234 @@ Luego de personalizar mi DPI, coloqué una política que analice todo el tráfic
 
 <img width="1562" height="312" alt="image" src="https://github.com/user-attachments/assets/b3183f03-5dc5-45b6-92d9-1567c906be25" />
 
+El WEB-Server solo puede comunicarse con el DB-Server en puerto 3306, nada más.
+
+Para lograr esto configuré dos políticas cada una enlazada tanto en entrada como en salida al port3 (ya que maneja a los servidores), en la primera política acepté la comunicación del web_server al db_server específicamente por el servicio de mysql, que vendría siendo el puerto 3306. La segunda política la hice para que negase todo los servicios, pero como la política para permitir el acceso por mysql está primero a esta, tiene prioridad, permitiendo así solo ese acceso:   
+
+<img width="1477" height="130" alt="image" src="https://github.com/user-attachments/assets/d91b3ed7-f2ea-41ee-8b24-74d7bc3e8437" />
+
+Agregar filtrado de aplicaciones para bloquean descargas de .exe desde web.
+
+Para lograr esto primero fui a security profiles, para configurar en file filter para bloquear cualquier archivo .exe que intente entrar por http:
+
+<img width="1232" height="665" alt="image" src="https://github.com/user-attachments/assets/8ab77878-ff03-4f55-9e7e-76e276dc0170" />
+
+También creé un sensor de aplicación para negar lo mismo desde el apartado de application control:
+
+<img width="1107" height="580" alt="image" src="https://github.com/user-attachments/assets/527d2333-14a1-48f7-8aea-69de1127079f" />
+
+Por último, enlace estos bloqueos .exe a algunas de las políticas que creé anteriormente como la de usuarios a web server:
+
+<img width="1400" height="435" alt="image" src="https://github.com/user-attachments/assets/feddb6e4-cded-4077-ba24-c79543848ac4" />
+
+Implementar rate limiting para evitar DoS.
+
+Para esto primero fui a traffic shaping y creé un nuevo traffic shaper que permitiese solo 5mbs para mi ejemplo:
+
+<img width="1187" height="576" alt="image" src="https://github.com/user-attachments/assets/4e0fe35d-9e2f-4c25-aff4-a549ea9a5a2f" />
+
+Luego edité una política de traffic shaping para especificar que entraría por el port1 que lleva a la red externa y saldría por el puerto para usuarios:
+
+<img width="1242" height="852" alt="image" src="https://github.com/user-attachments/assets/bf9dcde9-4a8b-47cf-b97c-3558591ec9f2" />
+
+Para dar protección extra hice una IPv4 DoS Policy la cual iría de usuarios al server_web 
+
+<img width="1217" height="705" alt="image" src="https://github.com/user-attachments/assets/26f7cfa5-e1fa-482a-ac67-e8f30cdca4c8" />
+
+Para estar bloqueando intentos repetidos de tcp_syn_flood, tcp_port_scan y udp_flood
+
+<img width="926" height="581" alt="image" src="https://github.com/user-attachments/assets/541c5c4f-d817-4dad-8a63-142b97c99241" />
+
+
+############### Running-configs #################
+
+Switch1-A
+
+Switch1-A#show running-config
+Building configuration...
+
+Current configuration : 4282 bytes
+!
+! Last configuration change at 02:29:34 UTC Fri Sep 25 2026
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname Switch1-A
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$tCOd$cx4VtY4jM88hjc/.1udTu.
+!
+username admin secret 5 $1$ZiGg$58KfqquCd3JWIBg0.3W/Z/
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+no ip domain-lookup
+ip domain-name laboratorio.local
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0
+ description Enlace Fortigate port2 - Usuarios
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description Enlace Fortigate port3 - Servidores
+ switchport access vlan 20
+ switchport trunk allowed vlan 10,20
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport port-security maximum 2
+ switchport port-security
+ negotiation auto
+!
+interface GigabitEthernet0/2
+ description Web Server
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ description DB Server
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ description PC1 - Usuarios
+ switchport access vlan 10
+ switchport mode access
+ negotiation auto
+!
+interface GigabitEthernet1/1
+ negotiation auto
+!
+interface GigabitEthernet1/2
+ negotiation auto
+!
+interface GigabitEthernet1/3
+ negotiation auto
+!
+interface GigabitEthernet2/0
+ negotiation auto
+!
+interface GigabitEthernet2/1
+ negotiation auto
+!
+interface GigabitEthernet2/2
+ negotiation auto
+!
+interface GigabitEthernet2/3
+ negotiation auto
+!
+interface GigabitEthernet3/0
+ negotiation auto
+!
+interface GigabitEthernet3/1
+ negotiation auto
+!
+interface GigabitEthernet3/2
+ negotiation auto
+!
+interface GigabitEthernet3/3
+ negotiation auto
+!
+interface Vlan90
+ ip address 10.78.7.145 255.255.255.248
+!
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+!
+control-plane
+!
+banner exec ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner incoming ^C
+IOSv - Cisco Systems Confidential -
+
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner login ^C
+IOSv - Cisco Systems Confidential -
+
+Supplemental End User License Restrictions
+
+This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
+
+By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
+^C
+banner motd ^C Acceso restringido: solo personal autorizado por Airam Brazoban ^C
+!
+line con 0
+line aux 0
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end
+
 
 
 
