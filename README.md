@@ -366,9 +366,9 @@ Switch1-A#show running-config
 Building configuration...
 
 Current configuration : 4282 bytes
-!
+
 ! Last configuration change at 02:29:34 UTC Fri Sep 25 2026
-!
+
 version 15.2
 service timestamps debug datetime msec
 service timestamps log datetime msec
@@ -477,64 +477,38 @@ interface GigabitEthernet2/2
 !
 interface GigabitEthernet2/3
  negotiation auto
-!
+
 interface GigabitEthernet3/0
  negotiation auto
-!
+
 interface GigabitEthernet3/1
  negotiation auto
-!
+
 interface GigabitEthernet3/2
  negotiation auto
-!
+
 interface GigabitEthernet3/3
  negotiation auto
-!
+
 interface Vlan90
  ip address 10.78.7.145 255.255.255.248
-!
+
 ip forward-protocol nd
-!
+
 ip http server
 ip http secure-server
-!
+
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
-!
-!
-!
-!
-!
-!
+
+
+
+
+
+
 control-plane
-!
-banner exec ^C
-IOSv - Cisco Systems Confidential -
-
-Supplemental End User License Restrictions
-
-This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
-
-By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
-^C
-banner incoming ^C
-IOSv - Cisco Systems Confidential -
 
 
-Supplemental End User License Restrictions
-
-This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
-
-By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
-^C
-banner login ^C
-IOSv - Cisco Systems Confidential -
-
-Supplemental End User License Restrictions
-
-This IOSv software is provided AS-IS without warranty of any kind. Under no circumstances may this software be used separate from the Cisco Modeling Labs Software that this software was provided with, or deployed or used as part of a production environment.
-
-By using the software, you agree to abide by the terms and conditions of the Cisco End User License Agreement at http://www.cisco.com/go/eula. Unauthorized use or distribution of this software is expressly prohibited.
 ^C
 banner motd ^C Acceso restringido: solo personal autorizado por Airam Brazoban ^C
 !
