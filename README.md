@@ -296,11 +296,39 @@ He configurado dentro de la política de NAT que cuando se salga use la direcci�
 
 <img width="722" height="215" alt="image" src="https://github.com/user-attachments/assets/d87e212f-9ebf-411a-8b48-7538ca3eb7f8" />
 
+Política 1: Permitir Usuarios a WEB-Server (443).
+
+Para hacer esta parte creé una política enlazada con port2(usuarios) y port3(servidores), hice unos objetos para hacer referencia a los usuarios de la vlan 10 y al web server para así especificar que admito el acceso al web server desde los usuarios por https:
+
+<img width="1502" height="142" alt="image" src="https://github.com/user-attachments/assets/db2b17ff-99c0-467a-bee6-0881155c543e" />
+
+Política 2: Bloquear Usuarios a DB-Server (3306)
+
+Esta política es bastante parecida a la anterior, los puertos del forti son los mismos y el origen sigue siendo los usuarios, solo cambié el destino a un objeto creado para el DB_Server e hice que negara el acceso en lugar de permitirlo como en el caso pasado:
+
+<img width="1500" height="186" alt="image" src="https://github.com/user-attachments/assets/3539910d-7777-4323-b1a2-a5c56813c9d2" />
+
+
 Activar DPI
 
 Para esta parte modifiqué el custom deep-inspection para que este cumpliera con lo que busco y luego pueda ser implementando, coloqué que el DPI bloque certificados bloqueados, como no confiables y también configuré deep scan ssh.
 
 <img width="1227" height="622" alt="image" src="https://github.com/user-attachments/assets/3335c758-1170-4ad2-9b37-315a36eae53b" />
+
+Luego de personalizar mi DPI, coloqué una política que analice todo el tráfico usando este DPI:
+
+<img width="1562" height="312" alt="image" src="https://github.com/user-attachments/assets/b3183f03-5dc5-45b6-92d9-1567c906be25" />
+
+
+
+
+
+
+
+
+
+
+
 
 
 
