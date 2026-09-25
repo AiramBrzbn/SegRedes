@@ -31,9 +31,16 @@ DHCP.
 Así se ve el diagrama de la topología según los dispositivos solicitados:
 <img width="832" height="742" alt="image" src="https://github.com/user-attachments/assets/8a7a1f5a-219a-4eaf-81d6-790a24e9ac72" />
 
+He conectado los dispositivos de la siguiente manera:
+
+<img width="500" height="437" alt="image" src="https://github.com/user-attachments/assets/b82906a9-0add-4bc4-9c8b-3b3f9f5e21f8" />
+
+El port1 del fortigate pertenece a la conexión con el ISP para la conexión, Port2 se encarga de los usuarios de la red y Port3 de los servidores.
+
 Ya que en la práctica se solicita que usemos nuestra matricula para el direccionamiento, he usado los últimos 4 digitos de mi matricula (0787) para dividir
 la red así:
 
 <img width="707" height="326" alt="image" src="https://github.com/user-attachments/assets/f5b915d9-6194-4704-aa2d-8ffafb54cab0" />
+
 
 
