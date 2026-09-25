@@ -363,6 +363,7 @@ Para estar bloqueando intentos repetidos de tcp_syn_flood, tcp_port_scan y udp_f
 Switch1-A
 
 Switch1-A#show running-config
+
 Building configuration...
 
 Current configuration : 4282 bytes
@@ -370,67 +371,107 @@ Current configuration : 4282 bytes
 ! Last configuration change at 02:29:34 UTC Fri Sep 25 2026
 
 version 15.2
+
 service timestamps debug datetime msec
+
 service timestamps log datetime msec
+
 service password-encryption
+
 service compress-config
 
 hostname Switch1-A
 
 boot-start-marker
+
 boot-end-marker
 
 enable secret 5 $1$tCOd$cx4VtY4jM88hjc/.1udTu.
 
 username admin secret 5 $1$ZiGg$58KfqquCd3JWIBg0.3W/Z/
+
 no aaa new-model
 
 no ip domain-lookup
+
 ip domain-name laboratorio.local
+
 ip cef
+
 no ipv6 cef
 
 spanning-tree mode pvst
+
 spanning-tree extend system-id
 
 interface GigabitEthernet0/0
+
  description Enlace Fortigate port2 - Usuarios
+ 
  switchport access vlan 10
+ 
  switchport mode access
+ 
  switchport port-security maximum 2
+ 
  switchport port-security
+ 
  negotiation auto
 
 interface GigabitEthernet0/1
+
  description Enlace Fortigate port3 - Servidores
+ 
  switchport access vlan 20
+ 
  switchport trunk allowed vlan 10,20
+ 
  switchport trunk encapsulation dot1q
+ 
  switchport mode trunk
+ 
  switchport port-security maximum 2
+ 
  switchport port-security
+ 
  negotiation auto
 
 interface GigabitEthernet0/2
+
  description Web Server
+ 
  switchport access vlan 20
+ 
  switchport mode access
+ 
  switchport port-security maximum 2
+ 
  switchport port-security
+ 
  negotiation auto
 
 interface GigabitEthernet0/3
+
  description DB Server
+ 
  switchport access vlan 20
+ 
  switchport mode access
+ 
  switchport port-security maximum 2
+ 
  switchport port-security
+ 
  negotiation auto
 
 interface GigabitEthernet1/0
+
  description PC1 - Usuarios
+ 
  switchport access vlan 10
+ 
  switchport mode access
+ 
  negotiation auto
 
 interface GigabitEthernet1/1
@@ -472,9 +513,11 @@ interface Vlan90
 ip forward-protocol nd
 
 ip http server
+
 ip http secure-server
 
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 
 control-plane
@@ -484,9 +527,13 @@ control-plane
 banner motd ^C Acceso restringido: solo personal autorizado por Airam Brazoban ^C
 
 line con 0
+
 line aux 0
+
 line vty 0 4
+
  login local
+ 
  transport input ssh
 
 end
