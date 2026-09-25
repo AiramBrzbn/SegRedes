@@ -304,7 +304,7 @@ Para hacer esta parte creé una política enlazada con port2(usuarios) y port3(s
 
 Política 2: Bloquear Usuarios a DB-Server (3306)
 
-Esta política es bastante parecida a la anterior, los puertos del forti son los mismos y el origen sigue siendo los usuarios, solo cambié el destino a un objeto creado para el DB_Server e hice que negara el acceso en lugar de permitirlo como en el caso pasado:
+Esta política es bastante parecida a la anterior, los puertos del forti son los mismos y el origen sigue siendo los usuarios, solo cambié el destino a un objeto creado para el DB_Server e hice que negara el acceso en lugar de permitirlo como en el caso pasado, claro que también especifiqué el servicio de mysql para ir como se pide:
 
 <img width="1500" height="186" alt="image" src="https://github.com/user-attachments/assets/3539910d-7777-4323-b1a2-a5c56813c9d2" />
 
