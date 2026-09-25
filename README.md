@@ -78,19 +78,31 @@ sudo netplan apply
 
 
 ##DB-SERVER##
+
 sudo nano /etc/netplan/00-installer-config.yaml
 
 network:
+
   version: 2
+  
   ethernets:
+  
     ens3:
+    
       addresses:
+      
         - 10.78.7.131/28
+        
       routes:
+      
         - to: 0.0.0.0/0
+        
           via: 10.78.7.129
+          
       nameservers:
+      
         addresses: [8.8.8.8, 8.8.4.4]
+        
 
 sudo netplan apply
 
@@ -98,34 +110,49 @@ sudo netplan apply
 ###Fortigate###
 
 conf sys global
+
 set hostname Forti
+
 end
 
 conf sys int
+
 edit port1
+
 set mode static
+
 set ip 192.168.227.130 255.255.255.0
+
 append allowaccess http https ssh
+
 end
 
 execute backup config flash
 
 
 ###Switch1-A###
-! Entrar al modo de configuración
+
+
 configure terminal
 
 hostname Switch1-A
+
 banner motd # Acceso restringido: solo personal autorizado por Airam Brazoban #
+
 no ip domain-lookup
 
 service password-encryption
 
 username admin secret cisco123
+
 enable secret cisco123
+
 line vty 0 4
+
  transport input ssh
+ 
  login local
+ 
 exit
 
 ip domain-name laboratorio.local
@@ -133,24 +160,40 @@ ip domain-name laboratorio.local
 crypto key generate rsa 
 
 ! Crear VLANs
+
 vlan 10
+
  name Usuarios
+ 
 exit
+
 vlan 20
+
  name Servidores
+ 
 exit
+
 vlan 90
+
  name Administración
+ 
 exit
 
 ! Asignar puerto para PC1 (Usuarios)
 interface Gi1/0
+
  switchport mode access
+ 
  switchport access vlan 10
+ 
  description PC1 - Usuarios
+ 
 switchport port-security
+
 switchport port-security maximum 2
+
 switchport port-security violation shutdown
+
 exit
 
 ! Asignar puerto para Web Server (Servidores)
