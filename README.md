@@ -374,49 +374,25 @@ service timestamps debug datetime msec
 service timestamps log datetime msec
 service password-encryption
 service compress-config
-!
+
 hostname Switch1-A
-!
+
 boot-start-marker
 boot-end-marker
-!
-!
+
 enable secret 5 $1$tCOd$cx4VtY4jM88hjc/.1udTu.
-!
+
 username admin secret 5 $1$ZiGg$58KfqquCd3JWIBg0.3W/Z/
 no aaa new-model
-!
-!
-!
-!
-!
-!
-!
-!
+
 no ip domain-lookup
 ip domain-name laboratorio.local
 ip cef
 no ipv6 cef
-!
-!
-!
+
 spanning-tree mode pvst
 spanning-tree extend system-id
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
-!
+
 interface GigabitEthernet0/0
  description Enlace Fortigate port2 - Usuarios
  switchport access vlan 10
@@ -424,7 +400,7 @@ interface GigabitEthernet0/0
  switchport port-security maximum 2
  switchport port-security
  negotiation auto
-!
+
 interface GigabitEthernet0/1
  description Enlace Fortigate port3 - Servidores
  switchport access vlan 20
@@ -434,7 +410,7 @@ interface GigabitEthernet0/1
  switchport port-security maximum 2
  switchport port-security
  negotiation auto
-!
+
 interface GigabitEthernet0/2
  description Web Server
  switchport access vlan 20
@@ -442,7 +418,7 @@ interface GigabitEthernet0/2
  switchport port-security maximum 2
  switchport port-security
  negotiation auto
-!
+
 interface GigabitEthernet0/3
  description DB Server
  switchport access vlan 20
@@ -450,31 +426,31 @@ interface GigabitEthernet0/3
  switchport port-security maximum 2
  switchport port-security
  negotiation auto
-!
+
 interface GigabitEthernet1/0
  description PC1 - Usuarios
  switchport access vlan 10
  switchport mode access
  negotiation auto
-!
+
 interface GigabitEthernet1/1
  negotiation auto
-!
+
 interface GigabitEthernet1/2
  negotiation auto
-!
+
 interface GigabitEthernet1/3
  negotiation auto
-!
+
 interface GigabitEthernet2/0
  negotiation auto
-!
+
 interface GigabitEthernet2/1
  negotiation auto
-!
+
 interface GigabitEthernet2/2
  negotiation auto
-!
+
 interface GigabitEthernet2/3
  negotiation auto
 
@@ -501,24 +477,18 @@ ip http secure-server
 ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
 
-
-
-
-
-
 control-plane
 
 
 ^C
 banner motd ^C Acceso restringido: solo personal autorizado por Airam Brazoban ^C
-!
+
 line con 0
 line aux 0
 line vty 0 4
  login local
  transport input ssh
-!
-!
+
 end
 
 
