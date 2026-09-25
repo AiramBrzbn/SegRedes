@@ -197,51 +197,87 @@ switchport port-security violation shutdown
 exit
 
 ! Asignar puerto para Web Server (Servidores)
+
 interface Gi0/2
+
  switchport mode access
+ 
  switchport access vlan 20
+ 
  description Web Server
+ 
 switchport port-security
+
 switchport port-security maximum 2
+
 switchport port-security violation shutdown
+
 exit
 
 
 ! Asignar puerto para DB Server (Servidores)
+
 interface Gi0/3
+
  switchport mode access
+ 
  switchport access vlan 20
+ 
  description DB Server
+ 
 switchport port-security
+
 switchport port-security maximum 2
+
 switchport port-security violation shutdown
+
 exit
 
 
 ! Puerto hacia Fortigate port2 (Usuarios)
+
 interface Gi0/0
+
  switchport mode access
+ 
  switchport access vlan 10
+ 
  description Enlace Fortigate port2 - Usuarios
+ 
 switchport port-security
+
 switchport port-security maximum 2
+
 switchport port-security violation shutdown
+
 exit
 
 ! Puerto hacia Fortigate port3 (Servidores)
+
 interface GigabitEthernet0/1
+
  description Enlace Fortigate port3 - Servidores
+ 
  switchport trunk encapsulation dot1q
+ 
  switchport mode trunk
+ 
  switchport trunk allowed vlan 10,20
+ 
  negotiation auto
+ 
 switchport port-security
+
 switchport port-security maximum 2
+
 switchport port-security violation shutdown
+
 exit
 
 interface vlan 90
+
  ip address 10.78.7.145 255.255.255.248
+ 
  no shutdown
 
 copy running-config startup-config
