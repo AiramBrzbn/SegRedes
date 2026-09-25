@@ -33,6 +33,7 @@ Así se ve el diagrama de la topología según los dispositivos solicitados:
 
 Ya que en la práctica se solicita que usemos nuestra matricula para el direccionamiento, he usado los últimos 4 digitos de mi matricula (0787) para dividir
 la red así:
+
 <img width="707" height="326" alt="image" src="https://github.com/user-attachments/assets/f5b915d9-6194-4704-aa2d-8ffafb54cab0" />
 
 
