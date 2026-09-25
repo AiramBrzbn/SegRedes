@@ -43,4 +43,153 @@ la red así:
 <img width="707" height="326" alt="image" src="https://github.com/user-attachments/assets/f5b915d9-6194-4704-aa2d-8ffafb54cab0" />
 
 
+##### SCRIPTS ####
+Como la mayoría de esta práctica fue realizada a través de la GUI de fortigate, los scripts utilizados para mis dispositivos se centraron en configuraciones
+básicas, como de interfaces y de seguridad, estos fueron mis scripts utilizados por cada dispositivo:
+
+##WEB-SERVER##
+sudo nano /etc/netplan/00-installer-config.yaml
+
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 10.78.7.130/28
+      routes:
+        - to: 0.0.0.0/0
+          via: 10.78.7.129
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+
+sudo netplan apply
+
+
+##DB-SERVER##
+sudo nano /etc/netplan/00-installer-config.yaml
+
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 10.78.7.131/28
+      routes:
+        - to: 0.0.0.0/0
+          via: 10.78.7.129
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+
+sudo netplan apply
+
+
+###Fortigate###
+
+conf sys global
+set hostname Forti
+end
+
+conf sys int
+edit port1
+set mode static
+set ip 192.168.227.130 255.255.255.0
+append allowaccess http https ssh
+end
+
+execute backup config flash
+
+
+###Switch1-A###
+! Entrar al modo de configuración
+configure terminal
+
+hostname Switch1-A
+banner motd # Acceso restringido: solo personal autorizado por Airam Brazoban #
+no ip domain-lookup
+
+service password-encryption
+
+username admin secret cisco123
+enable secret cisco123
+line vty 0 4
+ transport input ssh
+ login local
+exit
+
+ip domain-name laboratorio.local
+
+crypto key generate rsa 
+
+! Crear VLANs
+vlan 10
+ name Usuarios
+exit
+vlan 20
+ name Servidores
+exit
+vlan 90
+ name Administración
+exit
+
+! Asignar puerto para PC1 (Usuarios)
+interface Gi1/0
+ switchport mode access
+ switchport access vlan 10
+ description PC1 - Usuarios
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation shutdown
+exit
+
+! Asignar puerto para Web Server (Servidores)
+interface Gi0/2
+ switchport mode access
+ switchport access vlan 20
+ description Web Server
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation shutdown
+exit
+
+
+! Asignar puerto para DB Server (Servidores)
+interface Gi0/3
+ switchport mode access
+ switchport access vlan 20
+ description DB Server
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation shutdown
+exit
+
+
+! Puerto hacia Fortigate port2 (Usuarios)
+interface Gi0/0
+ switchport mode access
+ switchport access vlan 10
+ description Enlace Fortigate port2 - Usuarios
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation shutdown
+exit
+
+! Puerto hacia Fortigate port3 (Servidores)
+interface GigabitEthernet0/1
+ description Enlace Fortigate port3 - Servidores
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20
+ negotiation auto
+switchport port-security
+switchport port-security maximum 2
+switchport port-security violation shutdown
+exit
+
+interface vlan 90
+ ip address 10.78.7.145 255.255.255.248
+ no shutdown
+
+copy running-config startup-config
+
+
 
