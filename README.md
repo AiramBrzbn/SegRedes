@@ -288,4 +288,23 @@ Una de las primeras cosas que se nos pidió para el fortigate fue configurar una
 
 <img width="1567" height="352" alt="image" src="https://github.com/user-attachments/assets/4353da4d-b270-4176-a298-b41341d280fc" />
 
+Lo siguiente a configurar fue el NAT, para esta parte he configurado una política de NAT que va desde el port2 (usuarios) a port1(red externa):
+
+<img width="1802" height="187" alt="image" src="https://github.com/user-attachments/assets/9ca5e16b-2b8f-42cb-87ba-baddebbbbc1a" />
+
+He configurado dentro de la política de NAT que cuando se salga use la dirección ip de la interfaz saliente:
+
+<img width="722" height="215" alt="image" src="https://github.com/user-attachments/assets/d87e212f-9ebf-411a-8b48-7538ca3eb7f8" />
+
+Activar DPI
+
+Para esta parte modifiqué el custom deep-inspection para que este cumpliera con lo que busco y luego pueda ser implementando, coloqué que el DPI bloque certificados bloqueados, como no confiables y también configuré deep scan ssh.
+
+<img width="1227" height="622" alt="image" src="https://github.com/user-attachments/assets/3335c758-1170-4ad2-9b37-315a36eae53b" />
+
+
+
+
+
+
 
